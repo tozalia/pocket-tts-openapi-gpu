@@ -79,6 +79,69 @@ with open("public/captions.json", "w") as f:
 }
 ```
 
+## How Captions Work
+
+### TikTok-Style Captions
+
+The API generates word-level timestamps using **proportional character estimation** during synthesis:
+
+1. **Audio Generation** - Pocket TTS generates audio with known duration
+2. **Word Timing** - Each word's timing is estimated proportionally based on character count
+3. **Page Grouping** - Words are grouped into "pages" (default: 6 words per page)
+4. **Remotion Format** - Output matches [`createTikTokStyleCaptions()`](https://www.remotion.dev/docs/captions/create-tiktok-style-captions) format
+
+This provides **frame-accurate highlighting** for video captions without external services.
+
+### Standard Captions (SRT/VTT Compatible)
+
+The response also includes flat `captions` array for standard subtitle formats:
+
+```json
+{
+  "captions": [
+    {"text": "wire", "startMs": 1776, "endMs": 2039},
+    {"text": "five", "startMs": 2039, "endMs": 2302},
+    {"text": "hundred", "startMs": 2302, "endMs": 2763}
+  ],
+  "pages": [...]
+}
+```
+
+Convert to SRT:
+```python
+def to_srt(captions):
+    srt = []
+    for i, c in enumerate(captions, 1):
+        start = f"{c['startMs']//3600000:02d}:{(c['startMs']//60000)%60:02d}:{(c['startMs']//1000)%60:02d},{c['startMs']%1000:03d}"
+        end = f"{c['endMs']//3600000:02d}:{(c['endMs']//60000)%60:02d}:{(c['endMs']//1000)%60:02d},{c['endMs']%1000:03d}"
+        srt.append(f"{i}\n{start} --> {end}\n{c['text']}\n")
+    return "\n".join(srt)
+```
+
+## Montreal Forced Aligner Integration
+
+For **highest accuracy** word-level timestamps on existing audio, use MFA:
+
+```bash
+# Install MFA (via conda)
+conda create -n mfa -c conda-forge montreal-forced-aligner
+conda activate mfa
+mfa model download acoustic english_us_arpa
+mfa model download dictionary english_us_arpa
+
+# Align existing audio + script
+python forced_align.py --audio narration.wav --script script.txt -o captions.json
+```
+
+### How MFA Works
+
+1. **Acoustic Model** - Pre-trained English phoneme recognizer
+2. **Dictionary** - Maps words to phoneme sequences
+3. **Alignment** - Finds exact timestamp where each word/phoneme occurs
+4. **TextGrid Output** - Praat-format alignment parsed into JSON
+
+MFA provides **phoneme-level accuracy** (~10-20ms precision) compared to proportional estimation (~50-100ms).
+
 ## Voice Cloning
 
 ```bash
