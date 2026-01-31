@@ -485,7 +485,7 @@ async def create_speech(request: OpenAISpeechRequest):
 
 @app.post("/v1/audio/speech-with-alignment")
 async def speech_with_alignment(request: SpeechWithAlignmentRequest):
-    """Generate speech + word-level timestamps for Remotion."""
+    """Generate speech + word-level timestamps for Remotion (proportional estimation)."""
     if tts_model is None:
         raise HTTPException(503, "Model not loaded")
     
@@ -520,6 +520,56 @@ async def speech_with_alignment(request: SpeechWithAlignmentRequest):
         }
     except Exception as e:
         logger.exception(f"Speech+alignment failed: {e}")
+        raise HTTPException(500, f"Generation failed: {str(e)}")
+
+
+@app.post("/v1/audio/speech-with-whisper")
+async def speech_with_whisper(request: SpeechWithAlignmentRequest):
+    """Generate speech + Whisper-based word-level timestamps (most accurate)."""
+    if tts_model is None:
+        raise HTTPException(503, "Model not loaded")
+    
+    voice_name = VOICE_MAPPING.get(request.voice.lower(), request.voice)
+    
+    try:
+        # Generate audio
+        wav_data = await asyncio.to_thread(generate_audio_sync, voice_name, request.input)
+        
+        # Save to temp file for Whisper
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            tmp.write(wav_data)
+            tmp_path = tmp.name
+        
+        try:
+            # Use Whisper for accurate transcription
+            from whisper_align import transcribe_with_whisper
+            
+            whisper_result = await asyncio.to_thread(
+                transcribe_with_whisper,
+                tmp_path,
+                model_name="base.en",
+                fps=request.fps,
+                words_per_page=request.words_per_page,
+            )
+            
+            info = sf.info(tmp_path)
+            duration_ms = int(info.duration * 1000)
+        finally:
+            os.unlink(tmp_path)
+        
+        return {
+            "audio_base64": base64.b64encode(wav_data).decode(),
+            "audio_duration_ms": duration_ms,
+            "sample_rate": sample_rate,
+            "captions": whisper_result["captions"],
+            "timeline": [{"text": c["text"], "startMs": c["startMs"], "endMs": c["endMs"]} for c in whisper_result["captions"]],
+            "pages": whisper_result["pages"],
+            "alignment_method": "whisper",
+        }
+    except ImportError:
+        raise HTTPException(500, "Whisper not available. Install: pip install faster-whisper")
+    except Exception as e:
+        logger.exception(f"Speech+whisper failed: {e}")
         raise HTTPException(500, f"Generation failed: {str(e)}")
 
 
